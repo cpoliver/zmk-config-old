@@ -1,5 +1,12 @@
 #!/bin/bash
 
+## Flags
+IS_DRY_RUN=false
+
+if [ "$1" == "--dry-run" ]; then
+  IS_DRY_RUN=true
+fi
+
 ### Paths
 config_base_path=~/code/keyboards
 
@@ -18,19 +25,41 @@ build_firmware() {
   i=$1
   board=$(yq e ".include[$i].board" "$build_config_path")
   shield=$(yq e ".include[$i].shield" "$build_config_path")
-  path="build/$i-$shield"
+  shield_without_adapters=$(echo "$shield" | cut -d " " -f 1)
 
-  echo "--------------------------------------------"
+  # source_output_path="$west_execution_path/build/$i-$shield" #_without_adapters"
+  source_output_path="$west_execution_path/build/$i-$shield_without_adapters"
+
+  echo ""
   echo "CONFIG: '$build_config_path'"
   echo "OUTPUT: '$build_output_path'"
   echo "BOARD:  '$board'"
-  echo "SHIELD: '$shield'"
-  echo "PATH:   '$path'"
-  echo "--------------------------------------------"
+  echo "SHIELD: '$shield' ($shield_without_adapters)"
+  echo "PATH:   '$source_output_path'"
+  echo ""
 
-  west build -d "$path" -b "$board" -- -DSHIELD="$shield" -DZMK_CONFIG="$board_config_path"
+  west build -p \
+    -d "$source_output_path" \
+    -b "$board" -- \
+    -DSHIELD="\"$shield"\" \
+    -DZMK_CONFIG="$board_config_path"
+  # echo "$build_command" | pbcopy
+  # exit
 
-  cp "$path/zephyr/zmk.uf2" "$build_output_path/$board-$shield.uf2"
+  copy_command="cp $source_output_path/zephyr/zmk.uf2 $build_output_path/$board-$shield.uf2"
+
+  if [ "$IS_DRY_RUN" == true ]; then
+    # printf 'west build -d %s -b %s -- -DSHIELD=%s -DZMK_CONFIG=%s' "$source_output_path" "$board" "$shield" "$board_config_path"
+    # echo "cp $source_output_path/zephyr/zmk.uf2 $build_output_path/$board-$shield.uf2"
+    echo "$build_command"
+    echo "$copy_command"
+  else
+    # west build -d "$source_output_path" -b "$board" -- -DSHIELD="$shield" -DZMK_CONFIG="$board_config_path"
+    # cp "$path/zephyr/zmk.uf2" "$build_output_path/$board-$shield.uf2"
+
+    eval "$build_command"
+    # eval "$copy_command"
+  fi
 }
 
 ### Init
@@ -46,7 +75,11 @@ if [ "$build_yaml_include_items" -le 0 ]; then
   exit
 fi
 
-mkdir -p "$build_output_path/$build_subdir_name"
+if [ "$IS_DRY_RUN" == true ]; then
+  echo "mkdir -p $build_output_path/$build_subdir_name"
+else
+  mkdir -p "$build_output_path/$build_subdir_name"
+fi
 
 ### Build each firmware item
 for element_index in $(seq 1 "$build_yaml_include_items"); do
