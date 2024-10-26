@@ -155,10 +155,10 @@
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
             bindings = <
-&trans  &kp N1         &kp N7         &kp N8        &kp N9        &kp C_NEXT               &trans         &th END PG_DN    &kp UP               &th HOME PG_UP  &trans     &trans
-&trans  &hml LSHFT N0  &hml LCTRL N4  &hml LALT N5  &hml LGUI N6  &hml LS(LA(LCTRL)) N5    &kp LG(LS(Z))  &kp LEFT         &kp DOWN             &kp RIGHT       &kp LG(Z)  &trans
-&trans  &kp DOT        &kp N1         &kp N2        &kp N3        &kp N0                   &trans         &th LG(X) LG(C)  &th LG(V) LG(LS(V))  &kp LG(X)       &trans     &trans
-                                      &trans        &trans        &trans                   &trans         &trans           &trans
+&trans  &kp N1               &kp N7         &kp N8        &kp N9        &kp K_NEXT                  &kp HOME  &kp LBRC       &kp UP       &kp RBRC       &kp PG_UP  &trans
+&trans  &hml LSHFT N0        &hml LCTRL N4  &hml LALT N5  &hml LGUI N6  &kp LA(LC(K_PLAY_PAUSE))    &kp END   &kp LEFT       &kp DOWN     &kp RIGHT      &kp PG_DN  &trans
+&trans  &th KP_DOT KP_COMMA  &kp N1         &kp N2        &kp N3        &kp KP_EQUAL                &trans    &kp LG(MINUS)  &kp LG(DEL)  &kp LG(EQUAL)  &trans     &trans
+                                            &trans        &trans        &trans                      &trans    &trans         &trans
             >;
 
             sensor-bindings =
