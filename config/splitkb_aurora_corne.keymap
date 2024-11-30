@@ -5,7 +5,11 @@
  */
 
 #include <behaviors.dtsi>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/ext_power.h>
 #include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/mouse.h>
+#include <dt-bindings/zmk/outputs.h>
 
 // #include <dt-bindings/zmk/mouse.h>
 
@@ -134,16 +138,16 @@
     keymap {
         compatible = "zmk,keymap";
 
-        default_layer {
+        bse {
             bindings = <
-&th LA(LC(LGUI)) ENTER       &kp Q         &kp W         &kp E             &kp R        &kp T        &kp Y        &kp U            &kp I        &kp O         &kp P                &th LA(LC(LGUI)) GRAVE
-&th LS(LA(LC(LGUI))) Q       &hml LSHFT A  &hml LCTRL S  &hml LALT D       &hml LGUI F  &kp G        &kp H        &hmr RGUI J      &hmr RALT K  &hmr RCTRL L  &hmr RSHFT SEMI      &hmr RS(RC(RA(RGUI))) SQT
-&th LS(LA(LCTRL)) BACKSPACE  &kp Z         &kp X         &kp C             &kp V        &kp B        &kp N        &kp M            &kp COMMA    &kp DOT       &th BACKSLASH SLASH  &th LS(LA(LCTRL)) LG(GRAVE)
-                                                         &kp K_PLAY_PAUSE  &lt 2 SPACE  &lt 6 TAB    &lt 4 ENTER  &lt 3 BACKSPACE  &kp K_MUTE
+&th LA(LC(LGUI)) ENTER       &kp Q         &kp W         &kp E          &kp R        &kp T                        &kp Y                      &kp U            &kp I        &kp O         &kp P                &th LA(LC(LGUI)) GRAVE
+&th LS(LA(LC(LGUI))) Q       &hml LSHFT A  &hml LCTRL S  &hml LALT D    &hml LGUI F  &hml LA(LC(LEFT_SHIFT)) G    &hmr LA(LC(LEFT_SHIFT)) H  &hmr RGUI J      &hmr RALT K  &hmr RCTRL L  &hmr RSHFT SEMI      &hmr RS(RC(RA(RGUI))) SQT
+&th LS(LA(LCTRL)) BACKSPACE  &kp Z         &kp X         &kp C          &kp V        &kp B                        &kp N                      &kp M            &kp COMMA    &kp DOT       &th BACKSLASH SLASH  &th LS(LA(LCTRL)) LG(GRAVE)
+                                                         &lt 2 LG(TAB)  &lt 1 SPACE  &kp K_MUTE                   &kp K_PLAY_PAUSE           &lt 4 BACKSPACE  &lt 5 RET
             >;
 
             sensor-bindings =
-                <&inc_dec_kp LG(EQUAL) LG(MINUS)>,
+                <&inc_dec_kp LG(LS(Z)) LG(Z)>,
                 <&inc_dec_kp C_VOL_UP C_VOL_DN>;
         };
 
@@ -155,15 +159,26 @@
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
             bindings = <
-&trans  &kp N1               &kp N7         &kp N8        &kp N9        &kp K_NEXT                  &kp HOME  &kp LBRC       &kp UP       &kp RBRC       &kp PG_UP  &trans
-&trans  &hml LSHFT N0        &hml LCTRL N4  &hml LALT N5  &hml LGUI N6  &kp LA(LC(K_PLAY_PAUSE))    &kp END   &kp LEFT       &kp DOWN     &kp RIGHT      &kp PG_DN  &trans
-&trans  &th KP_DOT KP_COMMA  &kp N1         &kp N2        &kp N3        &kp KP_EQUAL                &trans    &kp LG(MINUS)  &kp LG(DEL)  &kp LG(EQUAL)  &trans     &trans
-                                            &trans        &trans        &trans                      &trans    &trans         &trans
+&trans  &th CARET PERCENT    &kp N7         &kp N8        &kp N9        &kp K_NEXT          &kp HOME   &kp LBRC   &kp UP     &kp RBRC      &kp END    &trans
+&trans  &hml LSHFT N0        &hml LCTRL N4  &hml LALT N5  &hml LGUI N6  &kp K_PLAY_PAUSE    &kp PG_DN  &kp LEFT   &kp DOWN   &kp RIGHT     &kp PG_UP  &trans
+&trans  &th KP_DOT KP_COMMA  &kp N1         &kp N2        &kp N3        &kp KP_EQUAL        &trans     &kp MINUS  &kp EQUAL  &kp LG(PLUS)  &trans     &trans
+                                            &trans        &trans        &trans              &trans     &trans     &trans
             >;
 
             sensor-bindings =
                 <&inc_dec_kp PG_UP PG_DN>,
                 <&inc_dec_kp PG_UP PG_DN>;
+        };
+
+        mse {
+            bindings = <
+&trans  &trans  &trans  &trans    &trans    &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans    &trans    &trans    &trans  &trans  &trans  &trans  &trans  &trans
+&trans  &trans  &trans  &trans    &trans    &trans    &trans  &trans  &trans  &trans  &trans  &trans
+                        &mkp MB2  &mkp MB1  &trans    &trans  &trans  &trans
+            >;
+
+            sensor-bindings = <&inc_dec_kp 0 0>, <&inc_dec_kp 0 0>;
         };
 
         num {
@@ -174,16 +189,16 @@
             //                    | GUI |     | SPC |   | ENT |     | ALT |
 
             bindings = <
-&trans  &kp FSLH  &kp LS(STAR)  &kp MINUS  &kp LS(PLUS)  &kp PERCENT    &kp CARET     &th KP_COMMA KP_DOT  &kp PERCENT   &kp LPAR         &kp RPAR       &trans
-&trans  &kp N1    &kp N2        &kp N3     &kp N4        &kp N5         &kp N6        &kp N7               &kp N8        &kp N9           &kp N0         &trans
-&trans  &kp N6    &kp N7        &kp N8     &kp N9        &kp N0         &kp KP_EQUAL  &kp KP_PLUS          &kp KP_MINUS  &kp KP_MULTIPLY  &kp KP_DIVIDE  &trans
-                                &trans     &trans        &trans         &trans        &trans               &trans
+&th GREATER_THAN LESS_THAN              &kp LS(PRCNT)  &kp N7  &kp N8  &kp N9  &th KP_MULTIPLY PLUS    &th PLUS KP_MULTIPLY  &kp N7  &kp N8  &kp N9  &kp LS(PRCNT)  &th GREATER_THAN LESS_THAN
+&th RIGHT_PARENTHESIS LEFT_PARENTHESIS  &kp N0         &kp N4  &kp N5  &kp N6  &kp EQUAL               &kp EQUAL             &kp N4  &kp N5  &kp N6  &kp N0         &th RIGHT_PARENTHESIS LEFT_PARENTHESIS
+&kp CARET                               &th COMMA DOT  &kp N1  &kp N2  &kp N3  &th MINUS KP_DIVIDE     &th MINUS KP_DIVIDE   &kp N1  &kp N2  &kp N3  &th DOT COMMA  &kp CARET
+                                                               &trans  &trans  &trans                  &trans                &trans  &trans
             >;
 
             sensor-bindings = <&inc_dec_kp RIGHT LEFT>, <&enc_num>;
         };
 
-        symbol {
+        sym {
             bindings = <
 &trans  &kp LS(N1)  &kp LS(N2)                      &kp LS(N3)                  &kp LS(N4)                              &kp LS(N5)    &kp LS(N6)  &kp LS(N7)  &kp LS(N8)           &kp LA(N3)  &kp GRAVE  &trans
 &trans  &th GT LT   &th RIGHT_BRACKET LEFT_BRACKET  &th RIGHT_BRACE LEFT_BRACE  &th RIGHT_PARENTHESIS LEFT_PARENTHESIS  &kp EQUAL     &trans      &kp MINUS   &th UNDER TILDE2     &kp EQUAL   &kp PIPE   &trans
@@ -194,39 +209,18 @@
             sensor-bindings = <&inc_dec_kp RIGHT LEFT>, <&inc_dec_kp UP DOWN>;
         };
 
-        //         mouse {
-        //             bindings = <
-        // &trans  &trans  &trans  &trans  &trans  &trans    &trans                     &mouse_scroll SCROLL_DOWN  &mmv MOVE_UP    &mouse_scroll SCROLL_UP  &trans                      &trans
-        // &trans  &trans  &trans  &trans  &trans  &trans    &mouse_scroll SCROLL_LEFT  &mmv MOVE_LEFT             &mmv MOVE_DOWN  &mmv MOVE_RIGHT          &mouse_scroll SCROLL_RIGHT  &trans
-        // &trans  &trans  &trans  &trans  &trans  &trans    &trans                     &trans                     &trans          &trans                   &trans                      &trans
-        //                         &trans  &trans  &trans    &trans                     &trans                     &trans
-        //             >;
-        //             sensor-bindings = <&inc_dec_kp 0 0>, <&inc_dec_kp 0 0>;
-        //         };
-
-        mouse {
+        sys {
             bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                        &trans  &trans  &trans    &trans  &trans  &trans
+&soft_off      &trans         &gresc         &out OUT_TOG   &ext_power EP_TOG  &bootloader    &trans  &kp F9  &kp F10  &kp F11  &kp F12  &trans
+&bt BT_SEL 4   &bt BT_SEL 3   &bt BT_SEL 2   &bt BT_SEL 1   &bt BT_SEL 0       &bt BT_CLR     &trans  &kp F5  &kp F6   &kp F7   &kp F8   &trans
+&bt BT_DISC 4  &bt BT_DISC 3  &bt BT_DISC 2  &bt BT_DISC 1  &bt BT_DISC 0      &sys_reset     &trans  &kp F1  &kp F2   &kp F3   &kp F4   &trans
+                                             &trans         &trans             &trans         &trans  &trans  &trans
             >;
 
             sensor-bindings = <&inc_dec_kp 0 0>, <&inc_dec_kp 0 0>;
         };
 
-        util {
-            bindings = <
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-&trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
-                        &trans  &trans  &trans    &trans  &trans  &trans
-            >;
-
-            sensor-bindings = <&inc_dec_kp 0 0>, <&inc_dec_kp 0 0>;
-        };
-
-        figma {
+        fig {
             bindings = <
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans    &trans  &trans  &trans  &trans  &trans  &trans
@@ -242,8 +236,8 @@
         compatible = "zmk,conditional-layers";
 
         thumbs_main {
-            if-layers = <2 3>;
-            then-layer = <1>;
+            if-layers = <1 5>;
+            then-layer = <4>;
         };
 
         // thumbs_alt {
